@@ -13,7 +13,7 @@ class NotificationProvider extends ChangeNotifier {
 
   NotificationProvider({@required this.notificationRepo});
 
-  List<NotificationDataModel> notificationList;
+  List<NotificationModel> notificationList;
 
   int count = 0;
 
@@ -37,9 +37,17 @@ class NotificationProvider extends ChangeNotifier {
         apiResponse.response.statusCode == 200) {
       notificationList = [];
 
+      notificationList = List<NotificationModel>.from(
+          apiResponse.response.data.map((x) => NotificationModel.fromMap(x)));
+
+      // List<NotificationModel> notificationModelFromMap =
+      //     List<NotificationModel>.from(json
+      //         .decode(apiResponse.response.data)
+      //         .map((x) => NotificationModel.fromMap(x)));
+
       apiResponse.response.data.forEach((notification) =>
-          notificationList.add(NotificationDataModel.fromJson(notification)));
-      print(notificationList[0].data.letter.orderId);
+          notificationList.add(NotificationModel.fromMap(notification)));
+      print(notificationList.length);
     } else {
       ApiChecker.checkApi(context, apiResponse);
     }

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:get_it/get_it.dart';
-import 'package:hundredminute_seller/data/datasource/remote/dio/dio_client.dart';
 import 'package:hundredminute_seller/localization/language_constrants.dart';
 import 'package:hundredminute_seller/provider/profile_provider.dart';
 import 'package:hundredminute_seller/provider/splash_provider.dart';
@@ -205,7 +203,10 @@ class MenuBottomSheet extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      getreciept();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Subscription_Screen()));
                     },
                     child: Container(
                       height: 120,
@@ -251,15 +252,5 @@ class MenuBottomSheet extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  getreciept() async {
-    DioClient dioClient;
-    final sl = GetIt.instance;
-    dioClient = sl();
-
-    final response = await dioClient.get('api/v2/seller/subscription-info');
-    print("response reciept");
-    print(response.data.toString());
   }
 }

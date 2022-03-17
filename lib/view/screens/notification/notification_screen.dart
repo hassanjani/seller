@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hundredminute_seller/helper/date_converter.dart';
+import 'package:get_it/get_it.dart';
+import 'package:hundredminute_seller/data/datasource/remote/dio/dio_client.dart';
+import 'package:hundredminute_seller/data/model/response/order_model.dart';
 import 'package:hundredminute_seller/localization/language_constrants.dart';
 import 'package:hundredminute_seller/provider/notification_provider.dart';
 import 'package:hundredminute_seller/provider/order_provider.dart';
+import 'package:hundredminute_seller/utill/app_constants.dart';
 import 'package:hundredminute_seller/utill/color_resources.dart';
 import 'package:hundredminute_seller/utill/dimensions.dart';
 import 'package:hundredminute_seller/utill/styles.dart';
 import 'package:hundredminute_seller/view/base/custom_app_bar.dart';
+import 'package:hundredminute_seller/view/screens/order/order_details_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
@@ -53,22 +57,17 @@ class NotificationScreen extends StatelessWidget {
                                   String oid = notification
                                       .notificationList[index]
                                       .data
-                                      .letter
-                                      .orderId;
-
-                                  final split1 = oid.split(',');
-
-                                  final split2 = split1[0].split(':');
+                                      .letters
+                                      .orderId
+                                      .toString();
 
                                   print("mssgg");
-                                  print(split2[1]);
-                                  oid = split2[1].trim();
 
                                   print("oid: " + oid);
-                                  // getOrderModel(oid, nid, context);
                                   Provider.of<OrderProvider>(context,
                                           listen: false)
                                       .setIndex(index);
+                                  getOrderModel(oid, nid, context);
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(
@@ -86,17 +85,15 @@ class NotificationScreen extends StatelessWidget {
                                     // )),
                                     title: Text(
                                         notification.notificationList[index]
-                                            .data.letter.message
+                                            .data.letters.message
                                             .toString(),
                                         style: titilliumRegular.copyWith(
                                           fontSize: Dimensions.FONT_SIZE_SMALL,
                                         )),
                                     subtitle: Text(
                                       DateFormat('hh:mm  dd/MM/yyyy').format(
-                                          DateConverter.isoStringToLocalDate(
-                                              notification
-                                                  .notificationList[index]
-                                                  .createdAt)),
+                                          notification.notificationList[index]
+                                              .createdAt),
                                       style: titilliumRegular.copyWith(
                                           fontSize:
                                               Dimensions.FONT_SIZE_EXTRA_SMALL,
@@ -118,34 +115,34 @@ class NotificationScreen extends StatelessWidget {
     );
   }
 
-  // getOrderModel(String oid, String nid, BuildContext context) async {
-  //   int id = int.parse(oid);
-  //   DioClient dioClient;
-  //   final sl = GetIt.instance;
-  //   dioClient = sl();
-  //
-  //   final response = await dioClient.get(AppConstants.TRACKING_URI + oid);
-  //   OrderModel orderModel;
-  //   print(response.data.toString());
-  //   if (response != null && response.statusCode == 200) {
-  //     orderModel = OrderModel.fromJson(response.data);
-  //     print(orderModel.customerId);
-  //     print("nid: $nid");
-  //
-  //     final response1 =
-  //         await dioClient.get(AppConstants.NOTIFICATION_URI + "/$nid/unread");
-  //     print("read ");
-  //     print(response1.data.toString());
-  //
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) =>
-  //                 OrderDetailsScreen(orderModel: orderModel, orderId: id)));
-  //   } else {
-  //     // ApiChecker.checkApi(context, apiResponse);
-  //   }
-  // }
+  getOrderModel(String oid, String nid, BuildContext context) async {
+    int id = int.parse(oid);
+    DioClient dioClient;
+    final sl = GetIt.instance;
+    dioClient = sl();
+
+    final response = await dioClient.get(AppConstants.ORDER_DETAILS + oid);
+    OrderModel orderModel;
+    print(response.data.toString());
+    if (response != null && response.statusCode == 200) {
+      orderModel = OrderModel.fromJson(response.data);
+      print(orderModel.customerId);
+      print("nid: $nid");
+
+      final response1 =
+          await dioClient.get(AppConstants.NOTIFICATION_URI + "/$nid/unread");
+      print("read ");
+      print(response1.data.toString());
+
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  OrderDetailsScreen(orderModel: orderModel, orderId: id)));
+    } else {
+      // ApiChecker.checkApi(context, apiResponse);
+    }
+  }
 }
 
 class NotificationShimmer extends StatelessWidget {
