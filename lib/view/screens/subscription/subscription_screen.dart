@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hundredminute_seller/data/datasource/remote/dio/dio_client.dart';
-import 'package:hundredminute_seller/localization/language_constrants.dart';
 import 'package:hundredminute_seller/utill/app_constants.dart';
 import 'package:hundredminute_seller/view/base/custom_app_bar.dart';
 import 'package:hundredminute_seller/view/screens/subscription/save_file_mobile.dart';
@@ -24,18 +23,57 @@ class _Subscription_ScreenState extends State<Subscription_Screen> {
   @override
   void initState() {
     // TODO: implement initState
-    getreciept();
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: getTranslated('notification', context)),
+      appBar: CustomAppBar(title: "Supscription"),
       body: Column(
         children: [
           Container(
-            child: Text(""),
+            child: FutureBuilder<ReciptData>(
+              future: getreciept(),
+              builder: (context, snapshot) {
+                if (snapshot.data != null) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    child: Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Date Started: ${snapshot.data.dataStart}"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Date end: ${snapshot.data.dataEnd}"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Price: ${snapshot.data.price}"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("plan duration: ${snapshot.data.planDuration}"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Text("Month: ${snapshot.data.planType}"),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                  // return Container(
+                  //   child: Center(child: Text("No Data")),
+                  // );
+                }
+              },
+            ),
           )
         ],
       ),
@@ -122,7 +160,7 @@ class _Subscription_ScreenState extends State<Subscription_Screen> {
     }
   }
 
-  getreciept() async {
+  Future<ReciptData> getreciept() async {
     DioClient dioClient;
     final sl = GetIt.instance;
     dioClient = sl();
@@ -132,6 +170,7 @@ class _Subscription_ScreenState extends State<Subscription_Screen> {
     ReciptData reciptData = ReciptData.fromMap(response.data);
     print(reciptData.invoiceDownloadLink);
     downloadFile(reciptData.invoiceDownloadLink);
+    return reciptData;
   }
 }
 
