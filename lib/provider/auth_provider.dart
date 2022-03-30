@@ -1,8 +1,10 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hundredminute_seller/data/model/response/base/api_response.dart';
 import 'package:hundredminute_seller/data/model/response/base/error_response.dart';
 import 'package:hundredminute_seller/data/model/response/response_model.dart';
 import 'package:hundredminute_seller/data/repository/auth_repo.dart';
+import 'package:hundredminute_seller/notification/PushNotifications.dart';
 
 class AuthProvider with ChangeNotifier {
   final AuthRepo authRepo;
@@ -22,11 +24,16 @@ class AuthProvider with ChangeNotifier {
     _isLoading = true;
     _loginErrorMessage = '';
     notifyListeners();
-    ApiResponse apiResponse = await authRepo.login(emailAddress: emailAddress, password: password);
+    ApiResponse apiResponse =
+        await authRepo.login(emailAddress: emailAddress, password: password);
     _isLoading = false;
     notifyListeners();
     ResponseModel responseModel;
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
+      FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+      PushNotificationService(firebaseMessaging).updateDeviceToken();
+
       Map map = apiResponse.response.data;
       String token = map["token"];
       authRepo.saveUserToken(token);
@@ -42,7 +49,7 @@ class AuthProvider with ChangeNotifier {
         errorMessage = errorResponse.errors[0].message;
       }
       _loginErrorMessage = errorMessage;
-      responseModel = ResponseModel(false , errorMessage);
+      responseModel = ResponseModel(false, errorMessage);
     }
     notifyListeners();
     return responseModel;

@@ -1,6 +1,8 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:hundredminute_seller/helper/network_info.dart';
 import 'package:hundredminute_seller/localization/language_constrants.dart';
+import 'package:hundredminute_seller/notification/PushNotifications.dart';
 import 'package:hundredminute_seller/provider/notification_provider.dart';
 import 'package:hundredminute_seller/utill/color_resources.dart';
 import 'package:hundredminute_seller/utill/dimensions.dart';
@@ -25,6 +27,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    PushNotificationService(firebaseMessaging).initialise();
+
     Provider.of<NotificationProvider>(context, listen: false).getCounts();
 
     _screens = [

@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hundredminute_seller/localization/app_localization.dart';
 import 'package:hundredminute_seller/provider/auth_provider.dart';
@@ -25,10 +28,25 @@ import 'package:hundredminute_seller/view/screens/dashboard/dashboard_screen.dar
 import 'package:provider/provider.dart';
 
 import 'di_container.dart' as di;
+import 'notification/my_notification.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await di.init();
+  final NotificationAppLaunchDetails notificationAppLaunchDetails =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+  int _orderID;
+  if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    _orderID = notificationAppLaunchDetails.payload != null
+        ? int.parse(notificationAppLaunchDetails.payload)
+        : null;
+  }
+  await MyNotification.initialize(flutterLocalNotificationsPlugin);
+  FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
   runApp(MultiProvider(
     providers: [

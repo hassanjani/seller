@@ -24,6 +24,7 @@ class AppConstants {
   static const String TRANSACTIONS_URI = '/api/v2/seller/transactions';
 
   static const String NOTIFICATION_URI = 'api/v2/seller/notifications';
+  static const String TOKEN_URI = 'api/v2/seller/cm-firebase-token';
 
   static const String PENDING = 'pending';
   static const String CONFIRMED = 'confirmed';
