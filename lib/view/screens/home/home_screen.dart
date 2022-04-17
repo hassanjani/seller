@@ -48,13 +48,13 @@ class HomeScreen extends StatelessWidget {
         title: Row(
           children: [
             Image.asset(
-              Images.logo,
+              Images.mini_logo,
               height: 40,
               width: 40,
-              color:
+              /* color:
                   Provider.of<ThemeProvider>(context, listen: false).darkTheme
                       ? ColorResources.WHITE
-                      : Theme.of(context).primaryColor,
+                      : Theme.of(context).primaryColor,*/
               fit: BoxFit.scaleDown,
               matchTextDirection: true,
             ),

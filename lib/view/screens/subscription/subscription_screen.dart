@@ -30,7 +30,7 @@ class _Subscription_ScreenState extends State<Subscription_Screen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Supscription"),
+      appBar: CustomAppBar(title: "Subscription"),
       body: Column(
         children: [
           Container(
@@ -42,26 +42,90 @@ class _Subscription_ScreenState extends State<Subscription_Screen> {
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Expanded(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("Date Started: ${snapshot.data.dataStart}"),
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Subscription Starting Date:\t",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text("${snapshot.data.dataStart}"),
+                            ],
+                          ),
                           SizedBox(
                             height: 5,
                           ),
-                          Text("Date end: ${snapshot.data.dataEnd}"),
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Date end: ",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text("${snapshot.data.dataEnd}"),
+                            ],
+                          ),
+                          // Text("Date end: ${snapshot.data.dataEnd}"),
                           SizedBox(
                             height: 5,
                           ),
-                          Text("Price: ${snapshot.data.price}"),
+                          Row(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Price: ",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text("${snapshot.data.price}"),
+                            ],
+                          ),
+                          // Text("Price: ${snapshot.data.price}"),
                           SizedBox(
                             height: 5,
                           ),
-                          Text("plan duration: ${snapshot.data.planDuration}"),
+                          Row(
+                            children: [
+                              Text(
+                                "plan duration: ",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                  "${snapshot.data.planDuration}\t${snapshot.data.planType}"),
+                            ],
+                          ),
+                          // Text("plan duration: ${snapshot.data.planDuration}"),
                           SizedBox(
                             height: 5,
                           ),
-                          Text("Month: ${snapshot.data.planType}"),
+                          Row(
+                            children: [
+                              Text(
+                                "Plan Type: ",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              Text("${snapshot.data.planType}"),
+                            ],
+                          ),
+                          // Text("Month: ${snapshot.data.planType}"),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                "Invoice Link: ",
+                                style: TextStyle(fontWeight: FontWeight.w600),
+                              ),
+                              // Text("${snapshot.data.planType}"),
+                            ],
+                          ),
+                          Text(" ${snapshot.data.invoiceDownloadLink}"),
                         ],
                       ),
                     ),

@@ -11,6 +11,7 @@ import 'package:hundredminute_seller/utill/color_resources.dart';
 import 'package:hundredminute_seller/utill/dimensions.dart';
 import 'package:hundredminute_seller/utill/styles.dart';
 import 'package:hundredminute_seller/view/base/custom_app_bar.dart';
+import 'package:hundredminute_seller/view/screens/notification/widget/WebviewClass.dart';
 import 'package:hundredminute_seller/view/screens/order/order_details_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -55,19 +56,16 @@ class NotificationScreen extends StatelessWidget {
                                   String nid =
                                       notification.notificationList[index].id;
                                   String oid = notification
-                                      .notificationList[index]
-                                      .data
-                                      .letters
-                                      .orderId
+                                      .notificationList[index].notifiableId
                                       .toString();
 
-                                  print("mssgg");
+                                  print("mssgg ok next screen");
 
                                   print("oid: " + oid);
+                                  getOrderModel(oid, nid, context);
                                   Provider.of<OrderProvider>(context,
                                           listen: false)
                                       .setIndex(index);
-                                  getOrderModel(oid, nid, context);
                                 },
                                 child: Container(
                                   margin: EdgeInsets.only(
@@ -83,13 +81,35 @@ class NotificationScreen extends StatelessWidget {
                                     //   width: 50,
                                     //   fit: BoxFit.cover,
                                     // )),
-                                    title: Text(
-                                        notification.notificationList[index]
-                                            .data.letters.message
-                                            .toString(),
-                                        style: titilliumRegular.copyWith(
-                                          fontSize: Dimensions.FONT_SIZE_SMALL,
-                                        )),
+                                    title: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            notification.notificationList[index]
+                                                .data.data.message
+                                                .toString(),
+                                            style: titilliumRegular.copyWith(
+                                              fontSize:
+                                                  Dimensions.FONT_SIZE_SMALL,
+                                            )),
+                                        OutlineButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        WebviewClass(notification
+                                                            .notificationList[
+                                                                index]
+                                                            .data
+                                                            .data
+                                                            .confirmationLink)));
+                                          },
+                                          child: Text("Confirm"),
+                                        ),
+                                      ],
+                                    ),
                                     subtitle: Text(
                                       DateFormat('hh:mm  dd/MM/yyyy').format(
                                           notification.notificationList[index]
@@ -133,6 +153,9 @@ class NotificationScreen extends StatelessWidget {
           await dioClient.get(AppConstants.NOTIFICATION_URI + "/$nid/unread");
       print("read ");
       print(response1.data.toString());
+      // print("read ");
+      // print(response1.data.toString());
+      Provider.of<NotificationProvider>(context, listen: false).getCounts();
 
       Navigator.push(
           context,

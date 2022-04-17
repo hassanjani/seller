@@ -25,9 +25,11 @@ import 'package:hundredminute_seller/theme/dark_theme.dart';
 import 'package:hundredminute_seller/theme/light_theme.dart';
 import 'package:hundredminute_seller/utill/app_constants.dart';
 import 'package:hundredminute_seller/view/screens/dashboard/dashboard_screen.dart';
+import 'package:hundredminute_seller/view/screens/splash/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'di_container.dart' as di;
+import 'notification/PushNotifications.dart';
 import 'notification/my_notification.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -36,6 +38,10 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+  PushNotificationService(firebaseMessaging).initialise();
+
   await di.init();
   final NotificationAppLaunchDetails notificationAppLaunchDetails =
       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
@@ -45,6 +51,7 @@ Future<void> main() async {
         ? int.parse(notificationAppLaunchDetails.payload)
         : null;
   }
+
   await MyNotification.initialize(flutterLocalNotificationsPlugin);
   FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
@@ -81,7 +88,7 @@ class MyApp extends StatelessWidget {
       _locals.add(Locale(language.languageCode, language.countryCode));
     });
     return MaterialApp(
-      title: '100 MINS',
+      title: '100 MINS Seller',
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       theme: Provider.of<ThemeProvider>(context).darkTheme ? dark : light,
@@ -93,7 +100,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: _locals,
-      home: DashboardScreen(),
+      home: SplashScreen(),
     );
   }
 }

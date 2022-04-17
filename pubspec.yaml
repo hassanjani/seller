@@ -28,6 +28,7 @@ dependencies:
   flutter_local_notifications: ^5.0.0
   firebase_core: ^1.0.1
   firebase_messaging: ^10.0.9
+  webview_flutter: ^3.0.2
 
 dependency_overrides:
   firebase_messaging_platform_interface: 3.1.6

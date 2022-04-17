@@ -1,226 +1,167 @@
+// To parse this JSON data, do
+//
+//     final welcome = welcomeFromJson(jsonString);
+
+import 'dart:convert';
+
+List<OrderModel> welcomeFromJson(String str) =>
+    List<OrderModel>.from(json.decode(str).map((x) => OrderModel.fromJson(x)));
+
+String welcomeToJson(List<OrderModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class OrderModel {
-  int _id;
-  int _customerId;
-  String _customerType;
-  String _paymentStatus;
-  String _orderStatus;
-  String _paymentMethod;
-  String _transactionRef;
-  double _orderAmount;
-  String _shippingAddress;
-  String _createdAt;
-  String _updatedAt;
-  int _discountAmount;
-  String _discountType;
-  Customer _customer;
+  OrderModel({
+    this.id,
+    this.customerId,
+    this.customerType,
+    this.paymentStatus,
+    this.orderStatus,
+    this.paymentMethod,
+    this.transactionRef,
+    this.orderAmount,
+    this.shippingAddress,
+    this.createdAt,
+    this.updatedAt,
+    this.discountAmount,
+    this.discountType,
+    this.customer,
+  });
 
-  OrderModel(
-      {int id,
-        int customerId,
-        String customerType,
-        String paymentStatus,
-        String orderStatus,
-        String paymentMethod,
-        String transactionRef,
-        double orderAmount,
-        String shippingAddress,
-        String createdAt,
-        String updatedAt,
-        int discountAmount,
-        String discountType,
-        Customer customer}) {
-    this._id = id;
-    this._customerId = customerId;
-    this._customerType = customerType;
-    this._paymentStatus = paymentStatus;
-    this._orderStatus = orderStatus;
-    this._paymentMethod = paymentMethod;
-    this._transactionRef = transactionRef;
-    this._orderAmount = orderAmount;
-    this._shippingAddress = shippingAddress;
-    this._createdAt = createdAt;
-    this._updatedAt = updatedAt;
-    this._discountAmount = discountAmount;
-    this._discountType = discountType;
-    this._customer = customer;
-  }
+  int id;
+  int customerId;
+  String customerType;
+  String paymentStatus;
+  String orderStatus;
+  dynamic paymentMethod;
+  dynamic transactionRef;
+  int orderAmount;
+  String shippingAddress;
+  String createdAt;
+  String updatedAt;
+  int discountAmount;
+  dynamic discountType;
+  Customer customer;
 
-  // ignore: unnecessary_getters_setters
-  int get id => _id;
-  // ignore: unnecessary_getters_setters
-  set id(int id) => _id = id;
-  int get customerId => _customerId;
-  String get customerType => _customerType;
-  String get paymentStatus => _paymentStatus;
-  // ignore: unnecessary_getters_setters
-  String get orderStatus => _orderStatus;
-  // ignore: unnecessary_getters_setters
-  set orderStatus(String orderStatus) => _orderStatus = orderStatus;
-  String get paymentMethod => _paymentMethod;
-  String get transactionRef => _transactionRef;
-  double get orderAmount => _orderAmount;
-  String get shippingAddress => _shippingAddress;
-  String get createdAt => _createdAt;
-  String get updatedAt => _updatedAt;
-  int get discountAmount => _discountAmount;
-  String get discountType => _discountType;
-  Customer get customer => _customer;
+  factory OrderModel.fromJson(Map<String, dynamic> json) => OrderModel(
+        id: json["id"],
+        customerId: json["customer_id"],
+        customerType: json["customer_type"],
+        paymentStatus: json["payment_status"],
+        orderStatus: json["order_status"],
+        paymentMethod: json["payment_method"],
+        transactionRef: json["transaction_ref"],
+        orderAmount: json["order_amount"],
+        shippingAddress: json["shipping_address"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+        discountAmount: json["discount_amount"],
+        discountType: json["discount_type"],
+        customer: Customer.fromJson(json["customer"]),
+      );
 
-  OrderModel.fromJson(Map<String, dynamic> json) {
-    _id = json['id'];
-    _customerId = json['customer_id'];
-    _customerType = json['customer_type'];
-    _paymentStatus = json['payment_status'];
-    _orderStatus = json['order_status'];
-    _paymentMethod = json['payment_method'];
-    _transactionRef = json['transaction_ref'];
-    _orderAmount = json['order_amount'].toDouble();
-    _shippingAddress = json['shipping_address'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-    _discountAmount = json['discount_amount'];
-    _discountType = json['discount_type'];
-    _customer = json['customer'] != null
-        ? new Customer.fromJson(json['customer'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this._id;
-    data['customer_id'] = this._customerId;
-    data['customer_type'] = this._customerType;
-    data['payment_status'] = this._paymentStatus;
-    data['order_status'] = this._orderStatus;
-    data['payment_method'] = this._paymentMethod;
-    data['transaction_ref'] = this._transactionRef;
-    data['order_amount'] = this._orderAmount;
-    data['shipping_address'] = this._shippingAddress;
-    data['created_at'] = this._createdAt;
-    data['updated_at'] = this._updatedAt;
-    data['discount_amount'] = this._discountAmount;
-    data['discount_type'] = this._discountType;
-    if (this._customer != null) {
-      data['customer'] = this._customer.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "customer_id": customerId,
+        "customer_type": customerType,
+        "payment_status": paymentStatus,
+        "order_status": orderStatus,
+        "payment_method": paymentMethod,
+        "transaction_ref": transactionRef,
+        "order_amount": orderAmount,
+        "shipping_address": shippingAddress,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+        "discount_amount": discountAmount,
+        "discount_type": discountType,
+        "customer": customer.toJson(),
+      };
 }
 
 class Customer {
-  int _id;
-  String _name;
-  String _fName;
-  String _lName;
-  String _phone;
-  String _image;
-  String _email;
-  String _emailVerifiedAt;
-  String _createdAt;
-  String _updatedAt;
-  String _streetAddress;
-  String _country;
-  String _city;
-  String _zip;
-  String _houseNo;
-  String _apartmentNo;
-  String _cmFirebaseToken;
+  Customer({
+    this.id,
+    this.name,
+    this.fName,
+    this.lName,
+    this.phone,
+    this.image,
+    this.email,
+    this.emailVerifiedAt,
+    this.createdAt,
+    this.updatedAt,
+    this.streetAddress,
+    this.country,
+    this.city,
+    this.zip,
+    this.houseNo,
+    this.apartmentNo,
+    this.cmFirebaseToken,
+    this.lt,
+    this.lg,
+  });
 
-  Customer(
-      {int id,
-        String name,
-        String fName,
-        String lName,
-        String phone,
-        String image,
-        String email,
-        String emailVerifiedAt,
-        String createdAt,
-        String updatedAt,
-        String streetAddress,
-        String country,
-        String city,
-        String zip,
-        String houseNo,
-        String apartmentNo,
-        String cmFirebaseToken}) {
-    this._id = id;
-    this._name = name;
-    this._fName = fName;
-    this._lName = lName;
-    this._phone = phone;
-    this._image = image;
-    this._email = email;
-    this._emailVerifiedAt = emailVerifiedAt;
-    this._createdAt = createdAt;
-    this._updatedAt = updatedAt;
-    this._streetAddress = streetAddress;
-    this._country = country;
-    this._city = city;
-    this._zip = zip;
-    this._houseNo = houseNo;
-    this._apartmentNo = apartmentNo;
-    this._cmFirebaseToken = cmFirebaseToken;
-  }
+  int id;
+  dynamic name;
+  String fName;
+  String lName;
+  String phone;
+  String image;
+  String email;
+  dynamic emailVerifiedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+  dynamic streetAddress;
+  dynamic country;
+  dynamic city;
+  dynamic zip;
+  dynamic houseNo;
+  dynamic apartmentNo;
+  String cmFirebaseToken;
+  String lt;
+  String lg;
 
-  int get id => _id;
-  String get name => _name;
-  String get fName => _fName;
-  String get lName => _lName;
-  String get phone => _phone;
-  String get image => _image;
-  String get email => _email;
-  String get emailVerifiedAt => _emailVerifiedAt;
-  String get createdAt => _createdAt;
-  String get updatedAt => _updatedAt;
-  String get streetAddress => _streetAddress;
-  String get country => _country;
-  String get city => _city;
-  String get zip => _zip;
-  String get houseNo => _houseNo;
-  String get apartmentNo => _apartmentNo;
-  String get cmFirebaseToken => _cmFirebaseToken;
+  factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+        id: json["id"],
+        name: json["name"],
+        fName: json["f_name"],
+        lName: json["l_name"],
+        phone: json["phone"],
+        image: json["image"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        createdAt: DateTime.parse(json["created_at"]),
+        updatedAt: DateTime.parse(json["updated_at"]),
+        streetAddress: json["street_address"],
+        country: json["country"],
+        city: json["city"],
+        zip: json["zip"],
+        houseNo: json["house_no"],
+        apartmentNo: json["apartment_no"],
+        cmFirebaseToken: json["cm_firebase_token"],
+        lt: json["lt"],
+        lg: json["lg"],
+      );
 
-  Customer.fromJson(Map<String, dynamic> json) {
-    _id = json['id'];
-    _name = json['name'];
-    _fName = json['f_name'];
-    _lName = json['l_name'];
-    _phone = json['phone'];
-    _image = json['image'];
-    _email = json['email'];
-    _emailVerifiedAt = json['email_verified_at'];
-    _createdAt = json['created_at'];
-    _updatedAt = json['updated_at'];
-    _streetAddress = json['street_address'];
-    _country = json['country'];
-    _city = json['city'];
-    _zip = json['zip'];
-    _houseNo = json['house_no'];
-    _apartmentNo = json['apartment_no'];
-    _cmFirebaseToken = json['cm_firebase_token'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this._id;
-    data['name'] = this._name;
-    data['f_name'] = this._fName;
-    data['l_name'] = this._lName;
-    data['phone'] = this._phone;
-    data['image'] = this._image;
-    data['email'] = this._email;
-    data['email_verified_at'] = this._emailVerifiedAt;
-    data['created_at'] = this._createdAt;
-    data['updated_at'] = this._updatedAt;
-    data['street_address'] = this._streetAddress;
-    data['country'] = this._country;
-    data['city'] = this._city;
-    data['zip'] = this._zip;
-    data['house_no'] = this._houseNo;
-    data['apartment_no'] = this._apartmentNo;
-    data['cm_firebase_token'] = this._cmFirebaseToken;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+        "f_name": fName,
+        "l_name": lName,
+        "phone": phone,
+        "image": image,
+        "email": email,
+        "email_verified_at": emailVerifiedAt,
+        "created_at": createdAt.toIso8601String(),
+        "updated_at": updatedAt.toIso8601String(),
+        "street_address": streetAddress,
+        "country": country,
+        "city": city,
+        "zip": zip,
+        "house_no": houseNo,
+        "apartment_no": apartmentNo,
+        "cm_firebase_token": cmFirebaseToken,
+        "lt": lt,
+        "lg": lg,
+      };
 }

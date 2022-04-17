@@ -6,11 +6,12 @@ import 'dart:convert';
 
 import 'package:meta/meta.dart';
 
-NotificationModel notificationModelFromMap(String str) =>
-    NotificationModel.fromMap(json.decode(str));
+List<NotificationModel> notificationModelFromMap(String str) =>
+    List<NotificationModel>.from(
+        json.decode(str).map((x) => NotificationModel.fromMap(x)));
 
-String notificationModelToMap(NotificationModel data) =>
-    json.encode(data.toMap());
+String notificationModelToMap(List<NotificationModel> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toMap())));
 
 class NotificationModel {
   NotificationModel({
@@ -28,7 +29,7 @@ class NotificationModel {
   String type;
   String notifiableType;
   String notifiableId;
-  Data data;
+  NotificationModelData data;
   dynamic readAt;
   DateTime createdAt;
   DateTime updatedAt;
@@ -39,7 +40,7 @@ class NotificationModel {
         type: json["type"],
         notifiableType: json["notifiable_type"],
         notifiableId: json["notifiable_id"],
-        data: Data.fromMap(json["data"]),
+        data: NotificationModelData.fromMap(json["data"]),
         readAt: json["read_at"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
@@ -57,38 +58,133 @@ class NotificationModel {
       };
 }
 
-class Data {
-  Data({
-    @required this.letters,
+class NotificationModelData {
+  NotificationModelData({
+    @required this.data,
   });
 
-  Letters letters;
+  DataData data;
 
-  factory Data.fromMap(Map<String, dynamic> json) => Data(
-        letters: Letters.fromMap(json["letters"]),
+  factory NotificationModelData.fromMap(Map<String, dynamic> json) =>
+      NotificationModelData(
+        data: DataData.fromMap(json["data"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "letters": letters.toMap(),
+        "data": data.toMap(),
       };
 }
 
-class Letters {
-  Letters({
+class DataData {
+  DataData({
     @required this.message,
-    @required this.orderId,
+    @required this.confirmationLink,
   });
 
   String message;
-  String orderId;
+  String confirmationLink;
 
-  factory Letters.fromMap(Map<String, dynamic> json) => Letters(
+  factory DataData.fromMap(Map<String, dynamic> json) => DataData(
         message: json["message"],
-        orderId: json["order_id"].toString(),
+        confirmationLink: json["confirmation_link"],
       );
 
   Map<String, dynamic> toMap() => {
         "message": message,
-        "order_id": orderId,
+        "confirmation_link": confirmationLink,
       };
 }
+
+// // To parse this JSON data, do
+// //
+// //     final welcome = welcomeFromJson(jsonString);
+//
+// import 'dart:convert';
+//
+// List<NotificationModel> welcomeFromJson(String str) =>
+//     List<NotificationModel>.from(
+//         json.decode(str).map((x) => NotificationModel.fromJson(x)));
+//
+// String welcomeToJson(List<NotificationModel> data) =>
+//     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+//
+// class NotificationModel {
+//   NotificationModel({
+//     this.id,
+//     this.type,
+//     this.notifiableType,
+//     this.notifiableId,
+//     this.data,
+//     this.readAt,
+//     this.createdAt,
+//     this.updatedAt,
+//   });
+//
+//   String id;
+//   String type;
+//   String notifiableType;
+//   String notifiableId;
+//   Data data;
+//   dynamic readAt;
+//   DateTime createdAt;
+//   DateTime updatedAt;
+//
+//   factory NotificationModel.fromJson(Map<String, dynamic> json) =>
+//       NotificationModel(
+//         id: json["id"],
+//         type: json["type"],
+//         notifiableType: json["notifiable_type"],
+//         notifiableId: json["notifiable_id"],
+//         data: Data.fromJson(json["data"]),
+//         readAt: json["read_at"],
+//         createdAt: DateTime.parse(json["created_at"]),
+//         updatedAt: DateTime.parse(json["updated_at"]),
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "type": type,
+//         "notifiable_type": notifiableType,
+//         "notifiable_id": notifiableId,
+//         "data": data.toJson(),
+//         "read_at": readAt,
+//         "created_at": createdAt.toIso8601String(),
+//         "updated_at": updatedAt.toIso8601String(),
+//       };
+// }
+//
+// class Data {
+//   Data({
+//     this.letter,
+//   });
+//
+//   Letter letter;
+//
+//   factory Data.fromJson(Map<String, dynamic> json) => Data(
+//         letter: Letter.fromJson(json["letter"]),
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "letter": letter.toJson(),
+//       };
+// }
+//
+// class Letter {
+//   Letter({
+//     this.message,
+//     this.orderId,
+//   });
+//
+//   String message;
+//   String orderId;
+//
+//   factory Letter.fromJson(Map<String, dynamic> json) => Letter(
+//         message: json["message"],
+//         orderId: json["order_id"],
+//       );
+//
+//   Map<String, dynamic> toJson() => {
+//         "message": message,
+//         "order_id": orderId,
+//       };
+// }

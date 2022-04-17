@@ -153,10 +153,50 @@ class MenuBottomSheet extends StatelessWidget {
                       image: Icons.settings,
                       title: getTranslated('more', context),
                       widget: SettingsScreen()),
-                  CustomBottomSheet(
-                      image: Icons.subscriptions_rounded,
-                      title: getTranslated('more', context),
-                      widget: Subscription_Screen()),
+                  InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Subscription_Screen()));
+                    },
+                    child: Container(
+                      height: 120,
+                      width: 120,
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: ColorResources.getBottomSheetColor(context),
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.grey[
+                                  Provider.of<ThemeProvider>(context).darkTheme
+                                      ? 800
+                                      : 200],
+                              spreadRadius: 0.5,
+                              blurRadius: 0.3)
+                        ],
+                      ),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.download_outlined,
+                              size: 30,
+                            ),
+                            Center(
+                              child: Text(
+                                "Subscription",
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: 12, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ]),
+                    ),
+                  ),
                   InkWell(
                     onTap: () {
                       Navigator.of(context).pop();
@@ -201,7 +241,7 @@ class MenuBottomSheet extends StatelessWidget {
                           ]),
                     ),
                   ),
-                  InkWell(
+                  /*InkWell(
                     onTap: () {
                       Navigator.push(
                           context,
@@ -244,7 +284,7 @@ class MenuBottomSheet extends StatelessWidget {
                             ),
                           ]),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),

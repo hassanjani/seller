@@ -2,7 +2,7 @@ import 'package:hundredminute_seller/data/model/response/language_model.dart';
 import 'package:hundredminute_seller/utill/images.dart';
 
 class AppConstants {
-  static const String APP_NAME = '100MINS';
+  static const String APP_NAME = 'Seller 100MINS';
 
   static const String BASE_URL = 'https://alhafizcloth.com/100min/';
   static const String LOGIN_URI = '/api/v2/seller/auth/login';

@@ -20,15 +20,15 @@ class OrderListRepo {
 
   Future<ApiResponse> getOrderDetails(String orderID) async {
     try {
-      final response = await dioClient.get(AppConstants.ORDER_DETAILS+orderID);
+      final response =
+          await dioClient.get(AppConstants.ORDER_DETAILS + orderID);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
 
-
-  Future<ApiResponse> orderStatus(int orderID , String status) async {
+  Future<ApiResponse> orderStatus(int orderID, String status) async {
     try {
       Response response = await dioClient.post(
         '${AppConstants.UPDATE_ORDER_STATUS}$orderID',
@@ -50,11 +50,13 @@ class OrderListRepo {
         'return',
         'failed',
       ];
-      Response response = Response(requestOptions: RequestOptions(path: ''), data: addressTypeList, statusCode: 200);
+      Response response = Response(
+          requestOptions: RequestOptions(path: ''),
+          data: addressTypeList,
+          statusCode: 200);
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));
     }
   }
-
 }
