@@ -79,19 +79,27 @@ class DataData {
   DataData({
     @required this.message,
     @required this.confirmationLink,
+    @required this.orderId,
+    @required this.rejectionLink,
   });
 
   String message;
   String confirmationLink;
+  String orderId;
+  String rejectionLink;
 
   factory DataData.fromMap(Map<String, dynamic> json) => DataData(
         message: json["message"],
         confirmationLink: json["confirmation_link"],
+        orderId: json["order_id"].toString(),
+        rejectionLink: json["rejection_link"],
       );
 
   Map<String, dynamic> toMap() => {
         "message": message,
         "confirmation_link": confirmationLink,
+        "order_id": orderId,
+        "rejection_link": rejectionLink,
       };
 }
 

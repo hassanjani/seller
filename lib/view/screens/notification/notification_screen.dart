@@ -56,7 +56,7 @@ class NotificationScreen extends StatelessWidget {
                                   String nid =
                                       notification.notificationList[index].id;
                                   String oid = notification
-                                      .notificationList[index].notifiableId
+                                      .notificationList[index].data.data.orderId
                                       .toString();
 
                                   print("mssgg ok next screen");
@@ -106,19 +106,41 @@ class NotificationScreen extends StatelessWidget {
                                                             .data
                                                             .confirmationLink)));
                                           },
-                                          child: Text("Confirm"),
+                                          child: Text("Accept"),
                                         ),
                                       ],
                                     ),
-                                    subtitle: Text(
-                                      DateFormat('hh:mm  dd/MM/yyyy').format(
-                                          notification.notificationList[index]
-                                              .createdAt),
-                                      style: titilliumRegular.copyWith(
-                                          fontSize:
-                                              Dimensions.FONT_SIZE_EXTRA_SMALL,
-                                          color:
-                                              ColorResources.getHint(context)),
+                                    subtitle: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          DateFormat('hh:mm  dd/MM/yyyy')
+                                              .format(notification
+                                                  .notificationList[index]
+                                                  .createdAt),
+                                          style: titilliumRegular.copyWith(
+                                              fontSize: Dimensions
+                                                  .FONT_SIZE_EXTRA_SMALL,
+                                              color: ColorResources.getHint(
+                                                  context)),
+                                        ),
+                                        OutlineButton(
+                                          onPressed: () {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        WebviewClass(notification
+                                                            .notificationList[
+                                                                index]
+                                                            .data
+                                                            .data
+                                                            .rejectionLink)));
+                                          },
+                                          child: Text("Reject"),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ),
