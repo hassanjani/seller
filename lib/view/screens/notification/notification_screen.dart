@@ -11,7 +11,6 @@ import 'package:hundredminute_seller/utill/color_resources.dart';
 import 'package:hundredminute_seller/utill/dimensions.dart';
 import 'package:hundredminute_seller/utill/styles.dart';
 import 'package:hundredminute_seller/view/base/custom_app_bar.dart';
-import 'package:hundredminute_seller/view/screens/notification/widget/WebviewClass.dart';
 import 'package:hundredminute_seller/view/screens/order/order_details_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -94,18 +93,11 @@ class NotificationScreen extends StatelessWidget {
                                                   Dimensions.FONT_SIZE_SMALL,
                                             )),
                                         OutlineButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        WebviewClass(notification
-                                                            .notificationList[
-                                                                index]
-                                                            .data
-                                                            .data
-                                                            .confirmationLink)));
-                                          },
+                                          onPressed: () => callapi(notification
+                                              .notificationList[index]
+                                              .data
+                                              .data
+                                              .confirmationLink),
                                           child: Text("Accept"),
                                         ),
                                       ],
@@ -126,18 +118,22 @@ class NotificationScreen extends StatelessWidget {
                                                   context)),
                                         ),
                                         OutlineButton(
-                                          onPressed: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        WebviewClass(notification
-                                                            .notificationList[
-                                                                index]
-                                                            .data
-                                                            .data
-                                                            .rejectionLink)));
-                                          },
+                                          onPressed: () => callapi(notification
+                                              .notificationList[index]
+                                              .data
+                                              .data
+                                              .rejectionLink)
+                                          // Navigator.push(
+                                          // context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             WebviewClass(notification
+                                          //                 .notificationList[
+                                          //                     index]
+                                          //                 .data
+                                          //                 .data
+                                          //                 .rejectionLink)));
+                                          ,
                                           child: Text("Reject"),
                                         ),
                                       ],
@@ -187,6 +183,15 @@ class NotificationScreen extends StatelessWidget {
     } else {
       // ApiChecker.checkApi(context, apiResponse);
     }
+  }
+
+  callapi(String url) async {
+    DioClient dioClient;
+    final sl = GetIt.instance;
+    dioClient = sl();
+    final response = await dioClient.get(url);
+    print("response");
+    print(response.data);
   }
 }
 
