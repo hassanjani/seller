@@ -83,7 +83,9 @@ class OrderDetailsModel {
         sellerAmount: json["seller_amount"],
         commissionOn: json["commission_on"],
         adminCommission: json["admin_commission"],
-        shipping: Shipping.fromJson(json["shipping"]),
+        shipping: json["shipping"] != null
+            ? Shipping.fromJson(json["shipping"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

@@ -67,11 +67,11 @@ class NotificationModelData {
 
   factory NotificationModelData.fromMap(Map<String, dynamic> json) =>
       NotificationModelData(
-        data: DataData.fromMap(json["data"]),
+        data: DataData.fromMap(json["letter"]),
       );
 
   Map<String, dynamic> toMap() => {
-        "data": data.toMap(),
+        "letter": data.toMap(),
       };
 }
 

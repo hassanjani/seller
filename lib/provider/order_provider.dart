@@ -12,22 +12,26 @@ class OrderProvider extends ChangeNotifier {
   final OrderListRepo orderListRepo;
   OrderProvider({@required this.orderListRepo});
 
-
   List<OrderModel> _orderList;
-  List<OrderModel> get orderList => _orderList != null ? _orderList.reversed.toList() : _orderList;
+  List<OrderModel> get orderList =>
+      _orderList != null ? _orderList.reversed.toList() : _orderList;
 
   List<OrderModel> _pendingList;
   List<OrderModel> _processing;
   List<OrderModel> _deliveredList;
   List<OrderModel> _returnList;
   List<OrderModel> _canceledList;
-  List<OrderModel> get pendingList => _pendingList != null ? _pendingList.reversed.toList() : _pendingList;
-  List<OrderModel> get processing => _processing != null ? _processing.reversed.toList() : _processing;
-  List<OrderModel> get deliveredList => _deliveredList != null ? _deliveredList.reversed.toList() : _deliveredList;
-  List<OrderModel> get returnList => _returnList != null ? _returnList.reversed.toList() : _returnList;
-  List<OrderModel> get canceledList => _canceledList != null ? _canceledList.reversed.toList() : _canceledList;
-
-
+  List<OrderModel> get pendingList =>
+      _pendingList != null ? _pendingList.reversed.toList() : _pendingList;
+  List<OrderModel> get processing =>
+      _processing != null ? _processing.reversed.toList() : _processing;
+  List<OrderModel> get deliveredList => _deliveredList != null
+      ? _deliveredList.reversed.toList()
+      : _deliveredList;
+  List<OrderModel> get returnList =>
+      _returnList != null ? _returnList.reversed.toList() : _returnList;
+  List<OrderModel> get canceledList =>
+      _canceledList != null ? _canceledList.reversed.toList() : _canceledList;
 
   List<OrderDetailsModel> _orderDetails;
   List<OrderDetailsModel> get orderDetails => _orderDetails;
@@ -56,18 +60,20 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<ResponseModel> updateOrderStatus(List<int> orderIDs, String status) async {
+  Future<ResponseModel> updateOrderStatus(
+      List<int> orderIDs, String status) async {
     _isLoading = true;
     notifyListeners();
 
     ResponseModel responseModel;
     ApiResponse apiResponse;
-    for(int id in orderIDs) {
+    for (int id in orderIDs) {
       apiResponse = await orderListRepo.orderStatus(id, status);
     }
     _isLoading = false;
 
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       String message = apiResponse.response.data.toString();
       responseModel = ResponseModel(true, message);
       _addOrderStatusErrorText = message;
@@ -89,10 +95,10 @@ class OrderProvider extends ChangeNotifier {
     return responseModel;
   }
 
-
   Future<void> getOrderList(BuildContext context) async {
     ApiResponse apiResponse = await orderListRepo.getOrderList();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _orderList = [];
       _pendingList = [];
       _processing = [];
@@ -102,15 +108,18 @@ class OrderProvider extends ChangeNotifier {
       apiResponse.response.data.forEach((order) {
         OrderModel orderModel = OrderModel.fromJson(order);
         _orderList.add(orderModel);
-        if (orderModel.orderStatus == AppConstants.PENDING || orderModel.orderStatus == AppConstants.CONFIRMED) {
+        if (orderModel.orderStatus == AppConstants.PENDING ||
+            orderModel.orderStatus == AppConstants.CONFIRMED) {
           _pendingList.add(orderModel);
-        } else if (orderModel.orderStatus == AppConstants.PROCESSING || orderModel.orderStatus == AppConstants.PROCESSED) {
+        } else if (orderModel.orderStatus == AppConstants.PROCESSING ||
+            orderModel.orderStatus == AppConstants.PROCESSED) {
           _processing.add(orderModel);
-        }else if (orderModel.orderStatus == AppConstants.DELIVERED) {
+        } else if (orderModel.orderStatus == AppConstants.DELIVERED) {
           _deliveredList.add(orderModel);
-        }else if ( orderModel.orderStatus == AppConstants.RETURNED) {
+        } else if (orderModel.orderStatus == AppConstants.RETURNED) {
           _returnList.add(orderModel);
-        } else if (orderModel.orderStatus == AppConstants.CANCELLED || orderModel.orderStatus == AppConstants.FAILED) {
+        } else if (orderModel.orderStatus == AppConstants.CANCELLED ||
+            orderModel.orderStatus == AppConstants.FAILED) {
           _canceledList.add(orderModel);
         }
       });
@@ -120,20 +129,21 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   void setIndex(int index) {
     _orderTypeIndex = index;
     notifyListeners();
   }
 
-
-  Future<List<OrderDetailsModel>> getOrderDetails( String orderID , BuildContext context) async {
+  Future<List<OrderDetailsModel>> getOrderDetails(
+      String orderID, BuildContext context) async {
     _orderDetails = null;
     _addOrderStatusErrorText = '';
     ApiResponse apiResponse = await orderListRepo.getOrderDetails(orderID);
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _orderDetails = [];
-      apiResponse.response.data.forEach((order) => _orderDetails.add(OrderDetailsModel.fromJson(order)));
+      // apiResponse.response.data.forEach((order) => _orderDetails.add(OrderDetailsModel.fromJson(order)));
+      _orderDetails.add(OrderDetailsModel.fromJson(apiResponse.response.data));
     } else {
       ApiChecker.checkApi(context, apiResponse);
     }
@@ -141,10 +151,10 @@ class OrderProvider extends ChangeNotifier {
     return _orderDetails;
   }
 
-
   void initOrderStatusList(BuildContext context) async {
     ApiResponse apiResponse = await orderListRepo.getOrderStatusList();
-    if (apiResponse.response != null && apiResponse.response.statusCode == 200) {
+    if (apiResponse.response != null &&
+        apiResponse.response.statusCode == 200) {
       _orderStatusList.clear();
       _orderStatusList.addAll(apiResponse.response.data);
       _orderStatusType = apiResponse.response.data[0];
@@ -163,5 +173,4 @@ class OrderProvider extends ChangeNotifier {
     _paymentMethodIndex = index;
     notifyListeners();
   }
-
 }

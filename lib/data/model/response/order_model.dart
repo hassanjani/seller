@@ -57,7 +57,9 @@ class OrderModel {
         updatedAt: json["updated_at"],
         discountAmount: json["discount_amount"],
         discountType: json["discount_type"],
-        customer: Customer.fromJson(json["customer"]),
+        customer: json["customer"] != null
+            ? Customer.fromJson(json["customer"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
