@@ -513,7 +513,8 @@ class OrderDetailsScreen extends StatelessWidget {
                                   //             color:
                                   //                 ColorResources.getTextColor(
                                   //                     context),
-                                  //             fontSize: 14)),
+                                  //
+                                  //             fsdfsfontSize: 14)),
                                   //     Text(
                                   //         '${getTranslated('email', context)} : ${orderModel.customer.email}',
                                   //         style: titilliumSemiBold.copyWith(
